@@ -1,0 +1,46 @@
+steps:
+  # Build Docker image with backend URL
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "--build-arg"
+      - "VITE_BE_URL=$_BACKEND_URL"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/fchoice-frontend:$COMMIT_SHA"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/fchoice-frontend:latest"
+      - "."
+
+  # Push to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "push"
+      - "--all-tags"
+      - "gcr.io/$PROJECT_ID/fchoice-frontend"
+
+  # Deploy to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "fchoice-frontend"
+      - "--image=gcr.io/$PROJECT_ID/fchoice-frontend:$COMMIT_SHA"
+      - "--region=asia-southeast1"
+      - "--platform=managed"
+      - "--allow-unauthenticated"
+      - "--min-instances=1"
+      - "--max-instances=5"
+      - "--cpu=1"
+      - "--memory=512Mi"
+      - "--port=80"
+
+images:
+  - "gcr.io/$PROJECT_ID/fchoice-frontend:$COMMIT_SHA"
+  - "gcr.io/$PROJECT_ID/fchoice-frontend:latest"
+
+options:
+  machineType: "E2_HIGHCPU_8"
+
+substitutions:
+  _BACKEND_URL: "https://fchoice-backend-XXXXX-as.a.run.app"
