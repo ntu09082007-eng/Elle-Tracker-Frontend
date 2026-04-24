@@ -1,0 +1,90 @@
+{
+  "updatedAt": "2025-12-13T17:05:51.362Z",
+  "data": [
+    {
+      "id": 82,
+      "name": "TPB - Em Xinh Say Hi",
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "categoryName": "Ngân hàng Kim chủ của năm",
+      "totalVotes": 452045
+    },
+    {
+      "id": 80,
+      "name": "VPB - Concert G-DRAGON",
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "categoryName": "Ngân hàng Kim chủ của năm",
+      "totalVotes": 186104
+    },
+    {
+      "id": 83,
+      "name": "TCB - Anh Trai Vượt Ngàn Chông Gai",
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "categoryName": "Ngân hàng Kim chủ của năm",
+      "totalVotes": 1914490
+    },
+    {
+      "id": 79,
+      "name": "VIB - Anh Trai Say Hi",
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "categoryName": "Ngân hàng Kim chủ của năm",
+      "totalVotes": 1451885
+    },
+    {
+      "id": 78,
+      "name": "SSB - See The Light",
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "categoryName": "Ngân hàng Kim chủ của năm",
+      "totalVotes": 11636
+    },
+    {
+      "id": 81,
+      "name": "MB - Sao Nhập Ngũ",
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "categoryName": "Ngân hàng Kim chủ của năm",
+      "totalVotes": 30234
+    },
+    {
+      "id": 64,
+      "name": "VPB",
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "categoryName": "Cổ phiếu ngân hàng được nhà đầu tư yêu thích của năm",
+      "totalVotes": 62710
+    },
+    {
+      "id": 63,
+      "name": "SHB",
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "categoryName": "Cổ phiếu ngân hàng được nhà đầu tư yêu thích của năm",
+      "totalVotes": 995621
+    },
+    {
+      "id": 62,
+      "name": "TCB",
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "categoryName": "Cổ phiếu ngân hàng được nhà đầu tư yêu thích của năm",
+      "totalVotes": 1798594
+    },
+    {
+      "id": 65,
+      "name": "MBB",
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "categoryName": "Cổ phiếu ngân hàng được nhà đầu tư yêu thích của năm",
+      "totalVotes": 14129
+    },
+    {
+      "id": 60,
+      "name": "STB",
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "categoryName": "Cổ phiếu ngân hàng được nhà đầu tư yêu thích của năm",
+      "totalVotes": 5572
+    },
+    {
+      "id": 86,
+      "name": "LPB",
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "categoryName": "Cổ phiếu ngân hàng được nhà đầu tư yêu thích của năm",
+      "totalVotes": 5671
+    }
+  ],
+  "status": "Success"
+}
