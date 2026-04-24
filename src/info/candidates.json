@@ -1,0 +1,66 @@
+{
+  "priority": [
+    {
+      "id": 83,
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "name": "TCB - Anh Trai Vượt Ngàn Chông Gai"
+    },
+    {
+      "id": 62,
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "name": "TCB"
+    }
+  ],
+  "normal": [
+    {
+      "id": 82,
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "name": "TPB - Em Xinh Say Hi"
+    },
+    {
+      "id": 80,
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "name": "VPB - Concert G-DRAGON"
+    },
+    {
+      "id": 79,
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "name": "VIB - Anh Trai Say Hi"
+    },
+    {
+      "id": 78,
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "name": "SSB - See The Light"
+    },
+    {
+      "id": 81,
+      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
+      "name": "MB - Sao Nhập Ngũ"
+    },
+    {
+      "id": 64,
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "name": "VPB"
+    },
+    {
+      "id": 63,
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "name": "SHB"
+    },
+    {
+      "id": 65,
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "name": "MBB"
+    },
+    {
+      "id": 60,
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "name": "STB"
+    },
+    {
+      "id": 86,
+      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
+      "name": "LPB"
+    }
+  ]
+}
