@@ -1,167 +1,136 @@
 import { useState, useRef, useEffect } from "react";
-import candidatesData from "../info/candidates.json";
-import Error from "../components/Error";
-import finalResult from "../info/final_result.json";
+import axios from "axios";
 
 interface Candidate {
-  id: number;
+  id: string;
   name: string;
-  categoryId: string;
-  categoryName: string;
   totalVotes: number;
+  categoryId: string;
 }
 
 interface ApiResponse {
-  updatedAt: string;
   data: Candidate[];
 }
 
 export default function RealtimePage() {
   const [data, setData] = useState<Record<string, Candidate[]>>({});
-  const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
-
-  const prevVotesRef = useRef<Record<number, number>>({});
-
-  const [connectionError, setConnectionError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [voteDiff, setVoteDiff] = useState<Record<string, number>>({});
+  const prevVotesRef = useRef<Record<string, number>>({});
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
+    const clock = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(clock);
+  }, []);
+
+  const fetchData = async () => {
     try {
-      const payload = finalResult as ApiResponse;
-      setConnectionError(null);
+      const response = await axios.get<ApiResponse>("http://localhost:3000/realtime");
+      const payloadData = response.data.data;
 
-      if (!payload || !payload.data) {
-        setIsLoading(false);
-        return;
-      }
-
-      setUpdatedAt(new Date(payload.updatedAt));
-
-      const payloadData = Array.isArray(payload.data)
-        ? (payload.data as Candidate[])
-        : [];
-
-      const diff: Record<number, number> = {};
+      const currentDiff: Record<string, number> = {};
       payloadData.forEach((item) => {
-        const previousVoteCount = prevVotesRef.current[item.id] ?? 0;
-        diff[item.id] = item.totalVotes - previousVoteCount;
+        const prev = prevVotesRef.current[item.id] ?? 0;
+        if (prev > 0 && item.totalVotes > prev) currentDiff[item.id] = item.totalVotes - prev;
         prevVotesRef.current[item.id] = item.totalVotes;
       });
+      setVoteDiff(currentDiff);
+      setTimeout(() => setVoteDiff({}), 8000);
 
-      const grouped = payloadData.reduce<Record<string, Candidate[]>>(
-        (acc, item) => {
-          const key = item.categoryName || "Khác";
-          if (!acc[key]) acc[key] = [];
-          acc[key].push(item);
-          return acc;
-        },
-        {}
-      );
-
-      Object.keys(grouped).forEach((category) => {
-        grouped[category].sort((a, b) => b.totalVotes - a.totalVotes);
+      const grouped: Record<string, Candidate[]> = {};
+      payloadData.forEach((item) => {
+        const key = item.categoryId || "Khác";
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(item);
       });
-
+      Object.values(grouped).forEach(list => list.sort((a, b) => b.totalVotes - a.totalVotes));
       setData(grouped);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error loading final results:", error);
-      setConnectionError("Không thể đọc dữ liệu kết quả cuối cùng.");
-      setIsLoading(false);
-    }
-    // run once on mount
+    } catch (e) { console.error("Lỗi kết nối"); }
+  };
+
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="px-4 xl:px-8 py-10 max-w-[98%] mx-auto">
-      <div className="mb-10 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 pb-2">
-          Kết quả bình chọn chung cuộc
-        </h1>
-        {isLoading && !updatedAt && !connectionError ? (
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-md flex-wrap justify-center">
-            <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></span>
-            <span className="text-gray-600">Đang tải dữ liệu...</span>
+    <div className="w-full bg-white min-h-screen font-inter antialiased py-10 px-6">
+      <div className="max-w-[1700px] mx-auto">
+        
+        {/* HEADER TỔNG */}
+        <div className="mb-14 text-center">
+          <h1 className="text-5xl font-[900] mb-4 uppercase text-black tracking-tighter">
+            ELLE Beauty Awards 2026
+          </h1>
+          <div className="text-[10px] text-neutral-400 font-bold tracking-[0.4em] uppercase">
+            • LIVE UPDATE: {currentTime.toLocaleTimeString("vi-VN")} •
           </div>
-        ) : connectionError ? (
-          <Error message={connectionError} />
-        ) : updatedAt ? (
-          <>
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-md flex-wrap justify-center">
-              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-              <span className="text-gray-700 text-sm md:text-base">
-                Cập nhật lần cuối lúc:{" "}
-                <span className="font-semibold text-gray-900">
-                  {new Date(updatedAt).toLocaleString("vi-VN")}
-                </span>
-              </span>
-            </div>
-          </>
-        ) : null}
-      </div>
+        </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full max-w-7xl mx-auto w-full">
-        {Object.entries(data).map(([category, candidates], idx) => (
-          <div
-            key={category}
-            className="bg-white rounded-2xl shadow-lg transition-all duration-300 overflow-hidden"
-            style={{ animationDelay: `${idx * 100}ms` }}
-          >
-            <div className="bg-gray-900 p-5">
-              <h2 className="text-xl font-bold text-white text-center">
-                {category}
-              </h2>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+        {/* GRID CÁC BẢNG VOTE */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {Object.entries(data).map(([category, candidates]) => (
+            <div key={category} className="bg-white rounded-[3rem] overflow-hidden border border-gray-200">
+              <div className="py-6 bg-black text-white text-center">
+                <h2 className="text-[19px] font-[900] uppercase tracking-wider">
+                  {category}
+                </h2>
+              </div>
+              
+              <table className="w-full border-collapse table-fixed bg-white">
                 <thead>
-                  <tr className="bg-gray-100">
-                    <th className="p-3 text-left font-semibold text-gray-700 w-2/3">
-                      Ứng viên
-                    </th>
-                    <th className="p-3 text-center font-semibold text-gray-700">
-                      Tổng bình chọn
-                    </th>
+                  <tr className="text-[14px] font-[900] text-neutral-600 bg-[#f1f3f5]">
+                    <th className="py-5 pl-5 text-left w-[58%]">Ứng viên</th>
+                    <th className="py-5 text-center w-[27%]">Tổng bình chọn</th>
+                    <th className="py-5 text-center w-[15%]">+/-</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody>
                   {candidates.map((c, index) => {
-                    const isHighlighted = candidatesData.priority.some(
-                      (p) => p.name === c.name
-                    );
+                    const isLyhan = c.name.toUpperCase() === "LYHAN";
+                    const isFirst = index === 0;
+                    const rankColor = isFirst ? "text-red-500" : "text-[#e8d1a4]";
+                    const isLastRow = index === candidates.length - 1;
+
                     return (
-                      <tr
-                        key={c.id}
-                        className={`transition-colors duration-200 ${
-                          isHighlighted
-                            ? "bg-red-50 hover:bg-red-100"
-                            : "hover:bg-gray-50"
-                        }`}
+                      <tr 
+                        key={c.id} 
+                        className={`transition-colors border-t border-gray-200 ${
+                          isLyhan ? 'bg-red-50' : 'hover:bg-gray-50/30'
+                        } ${isLastRow ? 'rounded-b-[3rem]' : ''}`}
                       >
-                        <td className="p-3">
-                          <div className="flex items-center gap-2">
-                            {index < 3 && (
-                              <span className="text-sm font-bold text-amber-700">
-                                #{index + 1}
-                              </span>
-                            )}
-                            <span
-                              className={`font-medium break-words ${
-                                isHighlighted
-                                  ? "text-rose-700 font-semibold"
-                                  : "text-gray-800"
-                              }`}
-                            >
-                              {c.name || "Không rõ"}
+                        <td className="py-[18px] pl-5">
+                          <div className="flex items-center gap-3">
+                            <span className={`font-[900] text-[14px] shrink-0 w-7 ${rankColor}`}>#{index + 1}</span>
+                            <span className={`text-[14px] uppercase truncate tracking-tight ${
+                              isFirst ? 'font-bold' : 'font-medium'
+                            } ${isLyhan ? 'text-red-500' : 'text-black'}`}>
+                              {c.name}
                             </span>
                           </div>
                         </td>
-                        <td
-                          className={`p-3 text-center font-semibold whitespace-nowrap ${
-                            isHighlighted ? "text-rose-700" : "text-gray-900"
-                          }`}
-                        >
-                          {c.totalVotes.toLocaleString()}
+                        
+                        <td className="py-[18px] text-center">
+                          <span className={`text-[14px] tracking-tight ${
+                            isFirst ? 'font-[900]' : 'font-medium'
+                          } ${isLyhan ? 'text-red-600' : 'text-neutral-700'}`}>
+                            {c.totalVotes.toLocaleString()}
+                          </span>
+                        </td>
+                        
+                        <td className="py-[18px] text-center">
+                          <div className="flex justify-center items-center h-8">
+                            {voteDiff[c.id] ? (
+                              /* 🛠 FIX: Nâng size số tăng trưởng lên 14px cho bằng Tổng bình chọn */
+                              <span className="text-[14px] font-[900] text-green-600">
+                                +{voteDiff[c.id].toLocaleString()}
+                              </span>
+                            ) : (
+                              /* 🛠 FIX: Nâng size số 0 lên 14px cho bằng Tổng bình chọn */
+                              <span className="text-neutral-300 text-[14px] font-medium">0</span>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     );
@@ -169,8 +138,8 @@ export default function RealtimePage() {
                 </tbody>
               </table>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
