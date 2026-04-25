@@ -1,66 +1,34 @@
 {
-  "priority": [
-    {
-      "id": 83,
-      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
-      "name": "TCB - Anh Trai Vượt Ngàn Chông Gai"
-    },
-    {
-      "id": 62,
-      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
-      "name": "TCB"
-    }
-  ],
-  "normal": [
-    {
-      "id": 82,
-      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
-      "name": "TPB - Em Xinh Say Hi"
-    },
-    {
-      "id": 80,
-      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
-      "name": "VPB - Concert G-DRAGON"
-    },
-    {
-      "id": 79,
-      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
-      "name": "VIB - Anh Trai Say Hi"
-    },
-    {
-      "id": 78,
-      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
-      "name": "SSB - See The Light"
-    },
-    {
-      "id": 81,
-      "categoryId": "w27-82w27-80w27-83w27-79w27-78w27-81",
-      "name": "MB - Sao Nhập Ngũ"
-    },
-    {
-      "id": 64,
-      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
-      "name": "VPB"
-    },
-    {
-      "id": 63,
-      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
-      "name": "SHB"
-    },
-    {
-      "id": 65,
-      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
-      "name": "MBB"
-    },
-    {
-      "id": 60,
-      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
-      "name": "STB"
-    },
-    {
-      "id": 86,
-      "categoryId": "w28-64w28-63w28-62w28-65w28-60w28-86",
-      "name": "LPB"
-    }
+  "all_candidates": [
+    { "id": "69e1fa8da51bd7bcd50c5b2e", "name": "Kim Tuyến", "category": "Best Face" },
+    { "id": "69e1faa9df6e31bd3fa4c6f9", "name": "Bích Ngọc", "category": "Best Face" },
+    { "id": "69e1fabda51bd7bcd50c5b30", "name": "Thiên Ân", "category": "Best Face" },
+    { "id": "69e1facff0f595bd4a8d2244", "name": "Nguyễn Tường San", "category": "Best Face" },
+    { "id": "69e1fae3f0f595bd4a8d2246", "name": "Lamoon", "category": "Best Face" },
+    { "id": "69e869b1925464aad45e8b96", "name": "DJ Mie", "category": "Best Hair" },
+    { "id": "69e1fc73a51bd7bcd50c5b35", "name": "Hạ Anh", "category": "Best Hair" },
+    { "id": "69e1fc84f0f595bd4a8d2249", "name": "Hoà Minzy", "category": "Best Hair" },
+    { "id": "69e869c711a402abc160de68", "name": "Phương Anh Đào", "category": "Best Hair" },
+    { "id": "69e869d7925464aad45e8b9a", "name": "Quỳnh Anh", "category": "Best Hair" },
+    { "id": "69e1fd46f0f595bd4a8d2250", "name": "Đồng Ánh Quỳnh", "category": "Best Body" },
+    { "id": "69e1fd55df6e31bd3fa4c700", "name": "Mỹ Mỹ", "category": "Best Body" },
+    { "id": "69e1fd64a51bd7bcd50c5b39", "name": "Hoa hậu Thanh Thuỷ", "category": "Best Body" },
+    { "id": "69e1fd74f0f595bd4a8d2252", "name": "Uyển Ân", "category": "Best Body" },
+    { "id": "69e1fd86a51bd7bcd50c5b3b", "name": "Văn Mai Hương", "category": "Best Body" },
+    { "id": "69e1fe18de1b6fbcd4b3098c", "name": "S(TRONG) Trọng Hiếu", "category": "Best Gentleman" },
+    { "id": "69e1fe2ade1b6fbcd4b3098e", "name": "ISAAC", "category": "Best Gentleman" },
+    { "id": "69e1fe40de1b6fbcd4b30990", "name": "Mai Tài Phến", "category": "Best Gentleman" },
+    { "id": "69e1fe52de1b6fbcd4b30992", "name": "Steven Nguyễn", "category": "Best Gentleman" },
+    { "id": "69e1fe64df6e31bd3fa4c704", "name": "Quốc Anh", "category": "Best Gentleman" },
+    { "id": "69e1fef9a51bd7bcd50c5b40", "name": "buitruonglinh", "category": "Male Breakthrough" },
+    { "id": "69e1ff11df6e31bd3fa4c707", "name": "Hồ Đông Quan", "category": "Male Breakthrough" },
+    { "id": "69e1ff29f0f595bd4a8d2256", "name": "Nguyễn Hùng", "category": "Male Breakthrough" },
+    { "id": "69e1ff3df0f595bd4a8d2258", "name": "Trần Ngọc Vàng", "category": "Male Breakthrough" },
+    { "id": "69e1ff53a51bd7bcd50c5b42", "name": "Võ Điền Gia Huy", "category": "Male Breakthrough" },
+    { "id": "69e1ffddf0f595bd4a8d225c", "name": "LYHAN", "category": "Female Breakthrough" },
+    { "id": "69e86a01afa82caabfaacd05", "name": "Phương Mỹ Chi", "category": "Female Breakthrough" },
+    { "id": "69e2004ddf6e31bd3fa4c70e", "name": "Tam Triều Dâng", "category": "Female Breakthrough" },
+    { "id": "69e2005ef0f595bd4a8d2266", "name": "Vũ Thanh Vân", "category": "Female Breakthrough" },
+    { "id": "69e20076f0f595bd4a8d2268", "name": "Thiên Ân", "category": "Female Breakthrough" }
   ]
 }
