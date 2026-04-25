@@ -1,10 +1,26 @@
 [
   {
     "id": "w27-82w27-80w27-83w27-79w27-78w27-81",
-    "name": "Ngân hàng Kim chủ của năm"
+    "name": "Best Face"
   },
   {
     "id": "w28-64w28-63w28-62w28-65w28-60w28-86",
-    "name": "Cổ phiếu ngân hàng được nhà đầu tư yêu thích của năm"
+    "name": "Best Hair"
+  },
+  {
+    "id": "best-body-id",
+    "name": "Best Body"
+  },
+  {
+    "id": "best-gentleman-id",
+    "name": "Best Gentleman"
+  },
+  {
+    "id": "male-breakthrough-id",
+    "name": "Male Breakthrough Star Of The Year"
+  },
+  {
+    "id": "female-breakthrough-id",
+    "name": "Female Breakthrough Star Of The Year"
   }
 ]
