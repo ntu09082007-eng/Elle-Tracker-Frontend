@@ -25,7 +25,7 @@ export default function Footer() {
         {/* CỘT PHẢI: Bản quyền (Giữ căn lề trái như turn trước) */}
         <div className="text-[14px] text-neutral-600 font-medium space-y-0.5 text-left">
           <p className="whitespace-nowrap">
-            © All rights reserved by Elle Beauty Awards.
+            © All rights reserved by Elle Beauty Awards & Estrella L - Nhà nhỏ của Lyhan.
           </p>
           <p className="whitespace-nowrap">
             Phát triển độc lập bởi người hâm mộ nghệ sĩ LYHAN.
