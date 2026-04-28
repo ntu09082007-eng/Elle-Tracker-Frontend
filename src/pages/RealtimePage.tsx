@@ -18,6 +18,7 @@ export default function RealtimePage() {
   const prevVotesRef = useRef<Record<string, number>>({});
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  // Đồng hồ chạy giây
   useEffect(() => {
     const clock = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(clock);
@@ -25,32 +26,46 @@ export default function RealtimePage() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get<ApiResponse>("http://localhost:3000/realtime");
+      // 🛠 FIX: THAY LINK LOCALHOST THÀNH LINK RENDER BACKEND CỦA BÀ
+      const response = await axios.get<ApiResponse>("https://elle-tracker-backend.onrender.com/realtime");
       const payloadData = response.data.data;
 
       const currentDiff: Record<string, number> = {};
       payloadData.forEach((item) => {
         const prev = prevVotesRef.current[item.id] ?? 0;
-        if (prev > 0 && item.totalVotes > prev) currentDiff[item.id] = item.totalVotes - prev;
+        // Nếu có sự tăng trưởng thì tính toán (+/-)
+        if (prev > 0 && item.totalVotes > prev) {
+            currentDiff[item.id] = item.totalVotes - prev;
+        }
         prevVotesRef.current[item.id] = item.totalVotes;
       });
-      setVoteDiff(currentDiff);
-      setTimeout(() => setVoteDiff({}), 8000);
 
+      setVoteDiff(currentDiff);
+      
+      // Sau 8 giây thì ẩn cái số tăng trưởng đi để đợi đợt quét mới
+      const timeout = setTimeout(() => setVoteDiff({}), 8000);
+
+      // Nhóm ứng viên theo Category
       const grouped: Record<string, Candidate[]> = {};
       payloadData.forEach((item) => {
         const key = item.categoryId || "Khác";
         if (!grouped[key]) grouped[key] = [];
         grouped[key].push(item);
       });
+
+      // Sắp xếp ai nhiều vote nhất lên đầu mỗi bảng
       Object.values(grouped).forEach(list => list.sort((a, b) => b.totalVotes - a.totalVotes));
+      
       setData(grouped);
-    } catch (e) { console.error("Lỗi kết nối"); }
+      return () => clearTimeout(timeout);
+    } catch (e) { 
+        console.error("❌ Lỗi kết nối Backend. Kiểm tra xem Render Backend có đang 'ngủ' không!"); 
+    }
   };
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000);
+    const interval = setInterval(fetchData, 10000); // 10 giây quét 1 lần
     return () => clearInterval(interval);
   }, []);
 
@@ -64,14 +79,14 @@ export default function RealtimePage() {
             ELLE Beauty Awards 2026
           </h1>
           <div className="text-[10px] text-neutral-400 font-bold tracking-[0.4em] uppercase">
-            • LIVE UPDATE: {currentTime.toLocaleTimeString("vi-VN")} •
+            • CẬP NHẬT TRỰC TIẾP: {currentTime.toLocaleTimeString("vi-VN")} •
           </div>
         </div>
 
         {/* GRID CÁC BẢNG VOTE */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {Object.entries(data).map(([category, candidates]) => (
-            <div key={category} className="bg-white rounded-[3rem] overflow-hidden border border-gray-200">
+            <div key={category} className="bg-white rounded-[3rem] overflow-hidden border border-gray-200 shadow-sm">
               <div className="py-6 bg-black text-white text-center">
                 <h2 className="text-[19px] font-[900] uppercase tracking-wider">
                   {category}
@@ -88,7 +103,8 @@ export default function RealtimePage() {
                 </thead>
                 <tbody>
                   {candidates.map((c, index) => {
-                    const isLyhan = c.name.toUpperCase() === "LYHAN";
+                    // Highlight đặc biệt cho "LYHAN" của bà nè
+                    const isLyhan = c.name.toUpperCase().includes("LYHAN");
                     const isFirst = index === 0;
                     const rankColor = isFirst ? "text-red-500" : "text-[#e8d1a4]";
                     const isLastRow = index === candidates.length - 1;
@@ -122,12 +138,10 @@ export default function RealtimePage() {
                         <td className="py-[18px] text-center">
                           <div className="flex justify-center items-center h-8">
                             {voteDiff[c.id] ? (
-                              /* 🛠 FIX: Nâng size số tăng trưởng lên 14px cho bằng Tổng bình chọn */
-                              <span className="text-[14px] font-[900] text-green-600">
+                              <span className="text-[14px] font-[900] text-green-600 animate-bounce">
                                 +{voteDiff[c.id].toLocaleString()}
                               </span>
                             ) : (
-                              /* 🛠 FIX: Nâng size số 0 lên 14px cho bằng Tổng bình chọn */
                               <span className="text-neutral-300 text-[14px] font-medium">0</span>
                             )}
                           </div>
