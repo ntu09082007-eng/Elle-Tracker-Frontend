@@ -10,31 +10,71 @@ export default function RealtimePage() {
 
   const fetchData = async () => {
     try {
-      // 🛠 1. CẬP NHẬT LINK MỚI CỦA BÀ (backend-1)
       const response = await axios.get("https://elle-tracker-backend-1.onrender.com/realtime");
-      
-      // Kiểm tra dữ liệu thô từ Console (F12)
-      console.log("Data từ backend-1 nè:", response.data);
-
-      // 🛠 2. BÓC TÁCH DỮ LIỆU LINH HOẠT (Chấp cả mảng hoặc object)
       let payloadData = response.data.data || response.data;
-      if (!Array.isArray(payloadData)) {
-        console.warn("Dữ liệu không phải là mảng, bà check lại Backend nhé!");
-        return;
-      }
+      if (!Array.isArray(payloadData)) return;
 
-      // Tính toán chênh lệch vote (+/-)
       const currentDiff: any = {};
       payloadData.forEach((item: any) => {
         const prev = prevVotesRef.current[item.id] ?? 0;
-        if (prev > 0 && item.totalVotes > prev) {
-          currentDiff[item.id] = item.totalVotes - prev;
-        }
+        if (prev > 0 && item.totalVotes > prev) currentDiff[item.id] = item.totalVotes - prev;
         prevVotesRef.current[item.id] = item.totalVotes;
       });
 
       setVoteDiff(currentDiff);
+      const grouped: any = {};
+      payloadData.forEach((item: any) => {
+        const key = item.categoryName || item.categoryId || "Khác";
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(item);
+      });
 
+      Object.values(grouped).forEach((list: any) => list.sort((a: any, b: any) => b.totalVotes - a.totalVotes));
+      setData(grouped);
+      setLoading(false);
+    } catch (e) { console.error("Lỗi gọi số!"); }
+  };
+
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 10000);
+    const clock = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => { clearInterval(interval); clearInterval(clock); };
+  }, []);
+
+  if (loading) return <div className="p-20 text-center font-bold animate-pulse uppercase">ĐANG ĐÁNH THỨC BACKEND-1... 🕒</div>;
+
+  return (
+    <div className="p-10 bg-white min-h-screen">
+      <h1 className="text-4xl font-black text-center mb-10 uppercase italic">ELLE Beauty Awards 2026</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {Object.entries(data).map(([cat, candidates]: any) => (
+          <div key={cat} className="border-2 border-black rounded-[2rem] overflow-hidden shadow-lg">
+            <div className="bg-black text-white p-5 text-center font-black uppercase tracking-widest">{cat}</div>
+            <table className="w-full text-sm">
+              <tbody className="divide-y divide-gray-100">
+                {candidates.map((c: any, index: number) => {
+                  const isLyhan = c.name.toUpperCase().includes("LYHAN");
+                  return (
+                    <tr key={c.id} className={isLyhan ? "bg-red-50" : "hover:bg-gray-50"}>
+                      <td className="p-5 font-bold flex items-center gap-2">
+                        <span className="text-gray-300">#{index + 1}</span> {c.name}
+                      </td>
+                      <td className="p-5 text-center font-black text-lg">{c.totalVotes.toLocaleString()}</td>
+                      <td className="p-5 text-center">
+                         {voteDiff[c.id] ? <span className="text-green-600 font-black">+{voteDiff[c.id]}</span> : <span className="text-gray-200">0</span>}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+} // <--- DẤU NGOẶC CUỐI CÙNG LÀ Ở ĐÂY, ĐỪNG DÁN THÊM GÌ NỮA!
       // Nhóm theo Category
       const grouped: any = {};
       payloadData.forEach((item: any) => {
